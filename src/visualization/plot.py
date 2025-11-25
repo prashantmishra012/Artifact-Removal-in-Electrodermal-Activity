@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def plot_eda_comparison(raw_signal, cleaned_signals, title="EDA Signal Comparison"):
     """
     Plots the raw EDA signal against one or more cleaned versions.
@@ -21,16 +22,19 @@ def plot_eda_comparison(raw_signal, cleaned_signals, title="EDA Signal Compariso
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
 
+    # Define a color palette for cleaned signals
+    colors = plt.cm.viridis(np.linspace(0, 1, len(cleaned_signals)))
+
     # Plot raw signal with some transparency
-    ax.plot(raw_signal, label='Raw Signal', color='#6c757d', alpha=0.7, linewidth=1)
+    ax.plot(raw_signal, label='Raw Signal', color='#6c757d', alpha=0.7, linewidth=1.5, linestyle='--')
 
-    for label, signal in cleaned_signals.items():
-        ax.plot(signal, label=label, color='#0779e4', linewidth=2)
+    for i, (label, signal) in enumerate(cleaned_signals.items()):
+        ax.plot(signal, label=label, color=colors[i], linewidth=2)
 
-    ax.set_title(title)
-    ax.set_xlabel("Samples")
-    ax.set_ylabel("Amplitude")
-    legend = ax.legend()
+    ax.set_title(title, fontsize=16, fontweight='bold')
+    ax.set_xlabel("Samples", fontsize=12)
+    ax.set_ylabel("Amplitude", fontsize=12)
+    legend = ax.legend(frameon=True, facecolor='black', framealpha=0.5, edgecolor='none')
     for text in legend.get_texts():
         text.set_color("white")
 
