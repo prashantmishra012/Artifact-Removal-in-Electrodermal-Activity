@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -23,15 +24,41 @@ st.set_page_config(
 # --- Custom CSS for Modern UI ---
 def load_css():
     """Inject custom CSS for styling the app."""
-    st.markdown("""
+
+    # Detect current theme
+    theme_base = st.get_option("theme.base")
+
+    # Define colors for dark and light mode
+    if theme_base == "dark":
+        # Dark Mode Colors
+        text_color = "#EAEAEA"
+        bg_color = "#0E1117"
+        secondary_bg_color = "#161A25"
+        primary_color = "#FF7F50" # Coral
+        border_color = "rgba(255, 127, 80, 0.3)"
+        uploader_bg_color = "rgba(255, 127, 80, 0.05)"
+        footer_border_color = "#1E222B"
+        footer_bg_color = "#0E1117"
+    else:
+        # Light Mode Colors
+        text_color = "#212529"
+        bg_color = "#FFFFFF"
+        secondary_bg_color = "#F8F9FA"
+        primary_color = "#FF7F50" # Coral
+        border_color = "rgba(0, 0, 0, 0.1)"
+        uploader_bg_color = "rgba(255, 127, 80, 0.05)"
+        footer_border_color = "#EAEAEA"
+        footer_bg_color = "#FFFFFF"
+
+    css = """
         <style>
             /* --- Main Theme & Layout --- */
             body {
-                color: #EAEAEA;
-                background-color: #0E1117;
+                color: {text_color};
+                background-color: {bg_color};
             }
             .stApp {
-                background-color: #0E1117;
+                background-color: {bg_color};
             }
             .main .block-container {
                 padding-top: 2rem;
@@ -47,8 +74,8 @@ def load_css():
 
             /* --- Styled Containers & Cards --- */
             .styled-container {
-                border: 1px solid rgba(255, 127, 80, 0.3);
-                background-color: #161A25;
+                border: 1px solid {border_color};
+                background-color: {secondary_bg_color};
                 padding: 2rem;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -57,39 +84,39 @@ def load_css():
 
             /* --- File Uploader --- */
             .stFileUploader {
-                border: 2px dashed #FF7F50;
-                background-color: rgba(255, 127, 80, 0.05);
+                border: 2px dashed {primary_color};
+                background-color: {uploader_bg_color};
                 border-radius: 10px;
                 padding: 1.5rem;
             }
             .stFileUploader label {
                 font-size: 1.2rem;
                 font-weight: bold;
-                color: #FF7F50;
+                color: {primary_color};
             }
 
             /* --- Buttons --- */
             .stButton>button {
                 border-radius: 8px;
-                border: 1px solid #FF7F50;
-                color: #FF7F50;
+                border: 1px solid {primary_color};
+                color: {primary_color};
                 background-color: transparent;
                 transition: all 0.3s ease-in-out;
             }
             .stButton>button:hover {
-                background-color: #FF7F50;
+                background-color: {primary_color};
                 color: white;
-                border-color: #FF7F50;
+                border-color: {primary_color};
             }
             .stDownloadButton>button {
                 width: 100%;
-                background-color: #FF7F50;
+                background-color: {primary_color};
                 color: white;
                 border: none;
                 border-radius: 8px;
             }
             .stDownloadButton>button:hover {
-                background-color: #E57245;
+                opacity: 0.85;
             }
 
             /* --- Tabs --- */
@@ -106,8 +133,8 @@ def load_css():
                 padding-bottom: 10px;
             }
             .stTabs [aria-selected="true"] {
-                background-color: #161A25;
-                color: #FF7F50;
+                background-color: {secondary_bg_color};
+                color: {primary_color};
                 font-weight: bold;
             }
 
@@ -120,15 +147,16 @@ def load_css():
                 left: 0;
                 bottom: 0;
                 width: 100%;
-                background-color: #0E1117;
-                color: #888;
+                background-color: {footer_bg_color};
+                color: {text_color};
                 text-align: center;
                 padding: 10px;
                 font-size: 0.8rem;
-                border-top: 1px solid #1E222B;
+                border-top: 1px solid {footer_border_color};
             }
         </style>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(css, unsafe_allow_html=True)
 
 load_css()
 
